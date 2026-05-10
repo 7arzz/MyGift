@@ -6,14 +6,12 @@ export default function Envelope({ content, color, to, from }) {
 
   // Simple brightness adjustment for 3D effect
   const darkColor = color; // We'll use CSS filters for the dark parts
-  
+
   const envelopeStyle = {
     "--envelope-bg": color,
     "--envelope-dark": `color-mix(in srgb, ${color}, black 15%)`,
-    "--envelope-light": `color-mix(in srgb, ${color}, white 20%)`,
-    "--envelope-inner": `color-mix(in srgb, ${color}, black 10%)`,
-    /* Fallbacks for older browsers */
-    background: color,
+    "--envelope-light": `color-mix(in srgb, ${color}, white 15%)`,
+    "--envelope-inner": `color-mix(in srgb, ${color}, black 5%)`,
   };
 
   return (
@@ -28,11 +26,11 @@ export default function Envelope({ content, color, to, from }) {
       <div className="envelope">
         {/* Top Flap */}
         <div className={`flap flap-top ${isOpen ? "is-open" : ""}`} />
-        
+
         {/* Side Flaps */}
         <div className="flap flap-left" />
         <div className="flap flap-right" />
-        
+
         {/* Bottom Flap */}
         <div className="flap flap-bottom" />
 
@@ -46,13 +44,9 @@ export default function Envelope({ content, color, to, from }) {
         {/* The Paper Inside */}
         <Paper isOpen={isOpen} content={content} to={to} from={from} />
 
-
         {/* Wax Seal */}
         <div className={`wax-seal ${isOpen ? "is-open" : ""}`} />
       </div>
     </div>
   );
 }
-
-
-
