@@ -1,5 +1,5 @@
 :root {
-  --env-w: clamp(280px, 85vw, 420px);
+  --env-w: clamp(260px, 88vw, 400px);
   --env-h: calc(var(--env-w) * 0.68);
   --flap-h: calc(var(--env-h) * 0.5);
   --flap-hw: calc(var(--env-w) * 0.5);
@@ -85,7 +85,8 @@
   bottom: 0;
   left: 0;
   border-width: 0 var(--flap-hw) var(--flap-h) var(--flap-hw);
-  border-color: transparent transparent var(--envelope-light) transparent;
+  border-color: transparent transparent var(--envelope-light, #ff758f) transparent;
+  filter: brightness(1.05); /* Reliable highlight */
   z-index: 4;
 }
 
@@ -110,25 +111,24 @@
 /* ─── Paper ─── */
 .paper {
   position: absolute;
-  width: 90%;
+  width: 92%;
   height: auto;
   min-height: 90%;
   max-height: 90%;
   background: var(--paper);
-  left: 5%;
+  left: 4%;
   top: 5%;
   border-radius: 2px;
   z-index: 2;
-  padding: 2rem;
+  padding: 1.5rem;
   box-sizing: border-box;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.025);
   overflow: hidden;
   will-change: transform, max-height;
   transition:
-    transform 0.65s cubic-bezier(0.23, 1, 0.32, 1),
-    max-height 0.65s cubic-bezier(0.23, 1, 0.32, 1),
-    box-shadow 0.65s ease;
-  transition-delay: 0s;
+    transform 0.8s cubic-bezier(0.23, 1, 0.32, 1),
+    max-height 0.8s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.8s ease;
 }
 
 .paper.is-open {
