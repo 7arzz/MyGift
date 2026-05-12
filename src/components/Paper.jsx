@@ -1,28 +1,43 @@
-export default function Paper({ isOpen, content, to, from }) {
+export default function Paper({ isUp, content, to, from }) {
   return (
-    <div className={`paper ${isOpen ? "is-open" : ""}`}>
-      <div className="letter-content" style={{ display: 'flex', flexDirection: 'column' }}>
-        <h2 style={{ fontFamily: 'var(--font-serif)', margin: '0 0 0.5rem', fontSize: '1.4rem', color: 'var(--text-main)' }}>
-          Dear {to || "Special One"},
-        </h2>
-        <p style={{ 
-          fontFamily: 'var(--font-hand)', 
-          fontSize: '1.25rem', 
-          color: 'var(--text-main)', 
-          lineHeight: '1.4',
-          margin: '0',
-          whiteSpace: 'pre-wrap'
-        }}>
-          {content || "No message provided."}
-        </p>
-        <div style={{ marginTop: '2rem', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '0.75rem', textAlign: 'right' }}>
-          <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', margin: 0, fontSize: '0.9rem' }}>With love,</p>
-          <p style={{ fontWeight: '600', margin: 0, color: 'var(--accent)' }}>{from || "Digital Gift"}</p>
-        </div>
-      </div>
+    <div className={`paper ${isUp ? "is-open" : ""}`}>
+      <h2 style={{ 
+        color: '#c0392b', 
+        margin: '0 0 15px 0', 
+        textAlign: 'center', 
+        borderBottom: '2px solid #f39c12', 
+        paddingBottom: '10px',
+        fontFamily: 'var(--font-serif)'
+      }}>
+        Dear {to || "Special One"}
+      </h2>
+      
+      <p style={{ 
+        color: '#444', 
+        fontSize: '15px', 
+        lineHeight: '1.6', 
+        margin: '0 0 12px 0',
+        fontFamily: 'var(--font-sans)',
+        whiteSpace: 'pre-wrap'
+      }}>
+        {content || "Halo, ini adalah contoh surat dengan teks yang cukup panjang. Anda sekarang bisa mengisi kertas ini dengan kalimat sebanyak apapun!"}
+      </p>
+
+      <p style={{ 
+        color: '#555', 
+        fontSize: '15px', 
+        margin: '20px 0 0', 
+        textAlignment: 'right', 
+        fontStyle: 'italic',
+        textAlign: 'right',
+        fontFamily: 'var(--font-serif)'
+      }}>
+        Dari: {from || "Hati ❤️"}
+      </p>
     </div>
   );
 }
+
 
 
 

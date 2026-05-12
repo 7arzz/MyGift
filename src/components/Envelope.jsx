@@ -1,52 +1,105 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Paper from "./Paper";
 
 export default function Envelope({ content, color, to, from }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [status, setStatus] = useState("Klik Bintang untuk Membuka");
+  const [isDown, setIsDown] = useState(false);
+  const [isFlapOpen, setIsFlapOpen] = useState(false);
 
-  // Simple brightness adjustment for 3D effect
-  const darkColor = color; // We'll use CSS filters for the dark parts
+  const [isPaperUp, setIsPaperUp] = useState(false);
+  const [isFlapZIndexTop, setIsFlapZIndexTop] = useState(true);
 
   const envelopeStyle = {
     "--envelope-bg": color,
-    "--envelope-dark": `color-mix(in srgb, ${color}, black 15%)`,
-    "--envelope-light": `color-mix(in srgb, ${color}, white 15%)`,
-    "--envelope-inner": `color-mix(in srgb, ${color}, black 5%)`,
+    "--envelope-dark": `color-mix(in srgb, ${color}, black 20%)`,
+    "--envelope-light": `color-mix(in srgb, ${color}, white 20%)`,
+  };
+
+  const handleToggle = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+
+    if (!isOpen) {
+      // OPENING SEQUENCE
+      setStatus("Membuka Segel...");
+      setIsDown(true);
+      
+      setTimeout(() => {
+        setStatus("Membuka Amplop...");
+        setIsFlapOpen(true);
+        
+        // Change z-index after half the rotation to prevent clipping issues
+        setTimeout(() => {
+          setIsFlapZIndexTop(false);
+          setIsPaperUp(true);
+          setStatus("Silakan Dibaca ✨");
+          setIsOpen(true);
+          setIsAnimating(false);
+        }, 600);
+      }, 400);
+    } else {
+      // CLOSING SEQUENCE
+      setStatus("Menutup...");
+      setIsPaperUp(false);
+      
+      setTimeout(() => {
+        setIsFlapOpen(false);
+        
+        // Return z-index to top before it finishes closing
+        setTimeout(() => {
+          setIsFlapZIndexTop(true);
+          
+          setTimeout(() => {
+            setIsDown(false);
+            setStatus("Amplop Tertutup 🔐");
+            setIsOpen(false);
+            setIsAnimating(false);
+          }, 300);
+        }, 400);
+      }, 700);
+    }
   };
 
   return (
-    <div
-      className="envelope-wrapper"
-      onClick={() => setIsOpen(!isOpen)}
-      style={envelopeStyle}
-      role="button"
-      aria-expanded={isOpen}
-      tabIndex={0}
-    >
-      <div className="envelope">
-        {/* Top Flap */}
-        <div className={`flap flap-top ${isOpen ? "is-open" : ""}`} />
+    <div className="envelope-container" style={envelopeStyle}>
+      <div className="status-text">{status}</div>
+      
+      {/* Back Panel */}
+      <div className="back"></div>
+      
+      {/* The Paper Inside */}
+      <Paper isUp={isPaperUp} content={content} to={to} from={from} />
 
-        {/* Side Flaps */}
-        <div className="flap flap-left" />
-        <div className="flap flap-right" />
+      {/* Front Panels (kiri, kanan, bawah) */}
+      <div className="front-left"></div>
+      <div className="front-right"></div>
+      <div className="front-bottom"></div>
 
-        {/* Bottom Flap */}
-        <div className="flap flap-bottom" />
+      {/* Top Flap */}
+      <div 
+        className={`top-flap ${isFlapOpen ? "is-open" : ""}`}
+        style={{ zIndex: isFlapZIndexTop ? 4 : 1 }}
+      ></div>
 
-        {/* Recipient Name on Front */}
-        {!isOpen && to && (
-          <div className="envelope-label">
-            <span>To:</span> {to}
-          </div>
-        )}
 
-        {/* The Paper Inside */}
-        <Paper isOpen={isOpen} content={content} to={to} from={from} />
+      {/* Star Button (Wax Seal) */}
+      <div 
+        className={`star-btn ${isDown ? "down" : ""} ${isAnimating ? "animating" : ""}`} 
+        onClick={handleToggle}
+      ></div>
 
-        {/* Wax Seal */}
-        <div className={`wax-seal ${isOpen ? "is-open" : ""}`} />
-      </div>
+      {/* To label on front (visible when closed) */}
+      {!isOpen && !isAnimating && to && (
+        <div className="envelope-label" style={{ zIndex: 5 }}>
+          <span>To:</span> {to}
+        </div>
+      )}
     </div>
   );
 }
+
+
+
+
